@@ -2,14 +2,12 @@ package com.DPC.spring.controllers;
 
 import java.util.List;
 
+import com.DPC.spring.entities.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.DPC.spring.entities.Service;
 import com.DPC.spring.repositories.ServiceRepository;
@@ -21,7 +19,25 @@ import com.DPC.spring.repositories.ServiceRepository;
 
 public class ServiceController {
 @Autowired
-ServiceRepository servicerepos ; 
+ServiceRepository servicerepos ;
+
+	/*@PutMapping("/update")
+	public String update2(@RequestBody Service service ) {
+		Service service1 = this.servicerepos.findByNom(service.getNom());
+		Service s = this.servicerepos.findByNom(service.getNom());
+		service1= servicerepos.saveAndFlush(service);
+		return "true"; }*/
+
+	@PutMapping("/update")
+	public String update(@RequestBody Service service ) {
+		Service service1 = this.servicerepos.findById(service.getId()).get();
+		service1.setNom(service.getNom());
+		service1.setDep(service.getDep());
+		service1.setProfil(service.getProfil());
+		service1.setResp(service.getResp());
+		servicerepos.saveAndFlush(service1);
+		return "true";
+	}
 
 
 @PreAuthorize("hasAuthority('admin')")
@@ -34,6 +50,9 @@ public String ajouter(@RequestBody Service service) {
 	else {
 		Service newservice = new Service();
 		newservice.setNom(service.getNom());
+		newservice.setDep(service.getDep());
+		newservice.setResp(service.getResp());
+		newservice.setProfil(service.getProfil());
 		newservice.setArchiver(false);
 		this.servicerepos.save(newservice);
 				return "true";
@@ -49,6 +68,9 @@ public Service servicebyid(Long  id){
 	return this.servicerepos.findById(id).get();
 }
 
+
+
+
 @PostMapping("/archiver")
 public String archiver(Long  id){
  Service s =this.servicerepos.findById(id).get();
@@ -57,4 +79,10 @@ public String archiver(Long  id){
  return "true";
 }
 
+
+	@GetMapping("/getservicebynom")
+	public Service rechercheservice (@RequestParam String nom) {
+		Service service = this.servicerepos.findByNom(nom);
+		return  service ;
+	}
 }

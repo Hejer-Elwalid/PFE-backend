@@ -16,6 +16,7 @@ public class Sanction {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private  String matriculeuser;
+
     @ManyToOne
     private Utilisateur user ;
 

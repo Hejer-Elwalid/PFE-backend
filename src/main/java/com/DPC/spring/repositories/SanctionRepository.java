@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SanctionRepository extends JpaRepository<Sanction,Long> {
 
 	List<Sanction> findByUser(Utilisateur user);
+
 }

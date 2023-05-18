@@ -23,7 +23,15 @@ import java.util.List;
 @RequestMapping("users")
 public class UtilisateurController {
 
+	@Autowired
+	private PasswordEncoder encoder;
 
+	@Autowired
+	UtilisateurRepository userrepos ;
+	@Autowired
+	AuthorityRepository authrepos ;
+	@Autowired
+	ServiceRepository servicerepos ;
 	@Autowired
      private IUtilisateurService iUtilisateurService;
 
@@ -35,13 +43,14 @@ public class UtilisateurController {
 
 		iUtilisateurService.deleteUtilisateur(idUtilisateur);
 	}
+
 	@PreAuthorize("hasAuthority('admin')")
 	@GetMapping("/userbyid")
 	public Utilisateur userById(Long id) {
 		return this.userrepos.findById(id).get();
 	}
 
-
+     //modifier un uttilisateur
 	@PutMapping("/update")
 	//@ApiOperation(value = " update personne ")
 	public String updatePersonne(@RequestBody Utilisateur utilisateur,String service ) {
@@ -53,11 +62,11 @@ public class UtilisateurController {
 		utilisateur.setAuthorities(user.getAuthorities());
 		utilisateur.setPassword(user.getPassword());
 		user= userrepos.saveAndFlush(utilisateur);
-	
-	return "true";
+		return "true";
+
 	}
 
-
+    // archiver un utilisateur
 	@PostMapping("/archiver")
 	public String archiver(Long id) {
 	 Utilisateur u =this.userrepos.findById(id).get();
@@ -65,31 +74,28 @@ public class UtilisateurController {
 	 this.userrepos.saveAndFlush(u);
 	 return "true";
 	}
-	
+
+	//
 	@GetMapping("/GetCandidacy")
 	public List<Utilisateur> GetUtilisateur() {
 		return iUtilisateurService.GetUtilisateur();
 	}
 
 
-	@Autowired
-	private PasswordEncoder encoder;
-	
-	@Autowired
-	UtilisateurRepository userrepos ; 
-	@Autowired
-	AuthorityRepository authrepos ;
-	@Autowired
-	ServiceRepository servicerepos ;
-
-
-	@PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("hasAuthority('admin')")
 	@GetMapping("/getuserbyemail")
 	public Utilisateur user(String email) {
 		return this.userrepos.findByEmail(email);
 	}
 
 
+	@PreAuthorize("hasAuthority('admin')")
+	@RequestMapping(value = "/userBymatricule", method = RequestMethod.GET)
+	public Utilisateur Userbymatricule( @RequestParam String matricule) {
+		Utilisateur user = this.userrepos.findByMatricule(matricule);
+		return user;
+	}
+   // ajouter un utilisateur
 	@PreAuthorize("hasAuthority('admin')")
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String Ajout(@RequestBody Utilisateur user,String service) {
@@ -112,15 +118,21 @@ public class UtilisateurController {
 		}
 	return "true";
 	}
+    // Recherche user par matricule ou par email
+	@GetMapping("/rechercheuser")
+	public Utilisateur rechercheuser(@RequestParam String critere, @RequestParam String valeur) {
+		if (critere.equalsIgnoreCase("email")) {
+			Utilisateur user = this.userrepos.findByEmail(valeur);
+			return user;
 
-	@PreAuthorize("hasAuthority('admin')")
-	@RequestMapping(value = "/userBymatricule", method = RequestMethod.GET)
-	public Utilisateur Userbymatricule(String matricule) {
-		Utilisateur user = this.userrepos.findByMatricule(matricule);
-		return user;
+		} else if (critere.equalsIgnoreCase("matricule")) {
+			Utilisateur user = this.userrepos.findByMatricule(valeur);
+			return  user;
+	}
+		return null;
 	}
 
-	
+
 	@PreAuthorize("hasAuthority('admin')")
 	@RequestMapping(value = "/admintest", method = RequestMethod.GET)
 	public String testconnectadmin() {

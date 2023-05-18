@@ -25,38 +25,41 @@ public class CongeController {
     	Conge c = this.congerepos.findByMatricule(matricule);	
     	c.setValider("refuser");
     	this.congerepos.saveAndFlush(c);
-    	
-    		return "true";
-    }
-    @GetMapping("/congerefuserchef")
-    public List<Conge> congerefuserchef (String service ) {
-    	
-    		return this.congerepos.findByServiceAndValider(service, "refuser");
-    }
+    		return "true"; }
+
+	//liste des conge refuser chef
+     /*@GetMapping("/congerefuserchef")
+        public List<Conge> congerefuserchef (String service ) {
+        return this.congerepos.findByServiceAndValider(service, "refuser"); }*/
+
+   @GetMapping("/congerefuserchef")
+   public List<Conge> congerefuserchef (@RequestParam("service") String service ) {
+       return this.congerepos.findByServiceAndValider(service, "refuser");
+   }
+
+
+
     @GetMapping("/congeaccepte")
     public List<Conge> congeaccepter () {
-    	
-    		return this.congerepos.findByValiderAndValiderrhIsFalse("accepter");
-    }
+    		return this.congerepos.findByValiderAndValiderrhIsFalse("accepter"); }
+
 
     @GetMapping("/usercongeaccepte")
     public List<Object>listconguser(String email){
     	Utilisateur u =this.userrepos.findByEmail(email);
+    	return this.congerepos.listconguser(u.getId()); }
 
-    	return this.congerepos.listconguser(u.getId());
-    }
-  
+   //liste conge accepter par chef
     @GetMapping("/congeaccepterchef")
-    public List<Conge> congeaccepterchef (String service ) {
-    	
-    		return this.congerepos.findByServiceAndValiderAndValiderrhIsFalse(service, "accepter");
-    }
+    public List<Conge> congeaccepterchef  (@RequestParam("service") String service ) {
+        return this.congerepos.findByServiceAndValiderAndValiderrhIsFalse(service, "accepter"); }
+
+    // liste des conge bloquer chef
     @GetMapping("/congebloquerchef")
     public List<Conge> congebloquerchef (String service ) {
-    	
-    		return this.congerepos.findByServiceAndValider(service, "bloquer");
-    }
-     
+        return this.congerepos.findByServiceAndValider(service, "bloquer"); }
+
+
     @PostMapping("/planificationrh")
     public String planificationrh(String matricule) {
     	Conge c = this.congerepos.findByMatricule(matricule);
@@ -77,10 +80,10 @@ public class CongeController {
              return "false";
          }
     }
+
     @GetMapping("/chefcongebyservice")
     public List<Conge> chefcongebyservice(String service){
-    	return this.congerepos.findByServiceAndValider(service,"non");
-    }
+    	return this.congerepos.findByServiceAndValider(service,"non"); }
     
     @PostMapping("/planificationchef")
     public String planificationchef (String matricule){
@@ -92,7 +95,8 @@ public class CongeController {
          String strDate2 = formatter.format(c.getDatefin());
          List<Object> listconge = this.congerepos.listconge(user.getService().getId(),strDate1,strDate2);
          System.out.println(listconge);
-        if(listconge.size()>=2) {
+        if(listconge.size()>=20) {
+
         c.setValider("bloquer");
         this.congerepos.saveAndFlush(c);
         return "false";
@@ -101,16 +105,12 @@ public class CongeController {
         	c.setValider("accepter");
         	c.setValiderrh(false);
             this.congerepos.saveAndFlush(c);
-            return "true"; 	
-        }
-         
-         
+            return "true"; }
     }
     
     
     @PostMapping("/planification")
     public  String planification(@RequestBody Conge conge) {
-
         Utilisateur user = this.userrepos.findByMatricule(conge.getUser().getMatricule());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String strDate1 = formatter.format(conge.getDatedebut());
@@ -138,10 +138,14 @@ else{
     public List<Object>listall(){
     	return this.congerepos.listcong();
     }
+
+
     @GetMapping("/congechefall")
     public List<Object>congechefall(String service){
     	return this.congerepos.listcongchef(service);
     }
+
+
     @PostMapping("/addconge")
     public  String addconge(@RequestBody Conge conge) {
     	Conge c =this.congerepos.findByMatricule(conge.getMatricule());
@@ -156,6 +160,28 @@ else{
                 this.congerepos.save(conge);
         return "true";
     }}
+
+
+    // modifier conge
+    @PutMapping("/modifierconge")
+    public String modifierConge(@RequestBody Conge conge) {
+        Conge c = this.congerepos.findByMatricule(conge.getMatricule());
+        if (c.getValider().equalsIgnoreCase("accepter")) {
+            return "false";// Le congé a été validé par le chef
+        } else {
+            Utilisateur user = this.userrepos.findByMatricule(conge.getUser().getMatricule());
+            c.setUser(user);
+            c.setValider("non");
+            c.setDatedebut(conge.getDatedebut());
+            c.setDatefin(conge.getDatefin());
+            c.setTypeconge(conge.getTypeconge());
+            c.setMatricule(conge.getMatricule());
+            c.setService(conge.getService());
+            this.congerepos.save(c);
+            return "true";// Modification du congé effectuée avec succès
+        }
+    }
+
     @PostMapping("/confirmer")
     public  String reponseconge(Long id) {
         Conge c =this.congerepos.findById(id).get();
@@ -175,5 +201,7 @@ else{
     	return this.congerepos.findAll();
     	
     }
+
+
 
 }

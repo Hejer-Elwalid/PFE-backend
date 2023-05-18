@@ -24,7 +24,11 @@ public class Conge {
     private String valider ;
     private Boolean validerrh;
     private String color ;
-    private String service ; 
+    private String service ;
+
+
     @ManyToOne
     private Utilisateur user ;
+
+
 }

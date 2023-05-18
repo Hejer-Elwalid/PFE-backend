@@ -32,9 +32,18 @@ public class Utilisateur {
 	private Date datenaissance ;
 	private  Long soldeconge ;
 	private Boolean archiver ;
-	//matricule
+
+	private String nom  ;
+	private  String prenom ;
+	private  String tel ;
+	private  String cin ;
+    private  String poste ;
+
 	@ManyToOne
 	private Service service ;
 	@ManyToOne
     private Autority authorities;
+
+	@ManyToOne
+	private Abscence abscence ;
 }
