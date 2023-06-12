@@ -23,7 +23,7 @@ public class Abscence {
     @ManyToOne
     Utilisateur user ;
 
-    public Long getId() {
+    /*public Long getId() {
         return id;
     }
 
@@ -55,6 +55,5 @@ public class Abscence {
         this.respservice = respservice;
     }
 
-    /* @ManyToOne
-    private Service service ;*/
+   */
 }

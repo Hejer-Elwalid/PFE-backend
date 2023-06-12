@@ -25,7 +25,6 @@ public class UtilisateurController {
 
 	@Autowired
 	private PasswordEncoder encoder;
-
 	@Autowired
 	UtilisateurRepository userrepos ;
 	@Autowired
@@ -44,7 +43,7 @@ public class UtilisateurController {
 		iUtilisateurService.deleteUtilisateur(idUtilisateur);
 	}
 
-	@PreAuthorize("hasAuthority('admin')")
+	//@PreAuthorize("hasAuthority('admin')")
 	@GetMapping("/userbyid")
 	public Utilisateur userById(Long id) {
 		return this.userrepos.findById(id).get();
@@ -52,19 +51,19 @@ public class UtilisateurController {
 
      //modifier un uttilisateur
 	@PutMapping("/update")
-	//@ApiOperation(value = " update personne ")
 	public String updatePersonne(@RequestBody Utilisateur utilisateur,String service ) {
 
 		Utilisateur user = this.userrepos.findById(utilisateur.getId()).get();
 		Service s = this.servicerepos.findByNom(service);
-		utilisateur.setService(s);
-		utilisateur.setArchiver(false);
-		utilisateur.setAuthorities(user.getAuthorities());
-		utilisateur.setPassword(user.getPassword());
-		user= userrepos.saveAndFlush(utilisateur);
+		user.setService(s);
+		user.setArchiver(false);
+		user.setProfil(user.getProfil());
+		user.setAuthorities(user.getAuthorities());
+		user.setPassword(user.getPassword());
+		userrepos.saveAndFlush(user);
 		return "true";
-
 	}
+
 
     // archiver un utilisateur
 	@PostMapping("/archiver")
@@ -81,20 +80,20 @@ public class UtilisateurController {
 		return iUtilisateurService.GetUtilisateur();
 	}
 
-
     //@PreAuthorize("hasAuthority('admin')")
 	@GetMapping("/getuserbyemail")
 	public Utilisateur user(String email) {
 		return this.userrepos.findByEmail(email);
 	}
 
-
-	@PreAuthorize("hasAuthority('admin')")
+    // get user by matricule
+	//@PreAuthorize("hasAuthority('admin')")
 	@RequestMapping(value = "/userBymatricule", method = RequestMethod.GET)
 	public Utilisateur Userbymatricule( @RequestParam String matricule) {
 		Utilisateur user = this.userrepos.findByMatricule(matricule);
 		return user;
 	}
+
    // ajouter un utilisateur
 	@PreAuthorize("hasAuthority('admin')")
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -109,7 +108,7 @@ public class UtilisateurController {
 		user.setArchiver(false);
 		user.setService(s);
 		user.setSoldeconge((long) 20);
-		
+
 
 	 this.userrepos.save(user);
 		}

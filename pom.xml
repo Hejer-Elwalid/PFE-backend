@@ -34,6 +34,24 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-rest-core</artifactId>
 		</dependency>
+		<!-- Dépendance pour Spring Web (pour les appels HTTP) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- Dépendance pour Apache HttpClient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
+		</dependency>
+
+		<!-- Dépendance pour Spring Kafka (pour l'intégration avec Apache Kafka) -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>javax.mail-api</artifactId>

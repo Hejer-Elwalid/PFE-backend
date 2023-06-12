@@ -1,9 +1,6 @@
 package com.DPC.spring.services;
 
-import com.DPC.spring.exceptions.EmailAlreadyUsedException;
-import com.DPC.spring.exceptions.ResourceNotFoundException;
 import com.DPC.spring.payload.requests.LoginRequest;
-import com.DPC.spring.payload.requests.RegisterRequest;
 import com.DPC.spring.repositories.AuthorityRepository;
 import com.DPC.spring.repositories.UtilisateurRepository;
 import com.DPC.spring.security.jwt.JwtTokenUtils;
@@ -15,9 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class AuthService {

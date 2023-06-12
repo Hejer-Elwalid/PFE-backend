@@ -84,14 +84,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/authority/add").permitAll()
                 .antMatchers("/login2").permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
-                // all other requests need to be authenticated
+                // toutes les autres requêtes doivent être authentifiées
                 .anyRequest().authenticated().and()
-                // make sure we use stateless session; session won't be used to
-                // store user's state.
+                // Assurez-vous d'utiliser une session sans état (stateless)
+                // la session ne sera pas utilisée pour stocker l'état de l'utilisateur
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // Add a filter to validate the tokens with every request
+
+        // Ajouter un filtre pour valider les jetons avec chaque requête.
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

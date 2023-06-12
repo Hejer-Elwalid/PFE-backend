@@ -15,11 +15,7 @@ public class UtilisateurServiceImp implements  IUtilisateurService{
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
- /*   @Override
-    public void add(Utilisateur utilisateur) {
 
-        utilisateurRepository.save(utilisateur);
-    } */
     @Override
     public void updateUtilisateur(Utilisateur utilisateur) {
         Utilisateur user = this.utilisateurRepository.findByMatricule(utilisateur.getMatricule());
@@ -36,7 +32,6 @@ public class UtilisateurServiceImp implements  IUtilisateurService{
     public List<Utilisateur> GetUtilisateur() {
         List<Utilisateur> utilisateur = (List<Utilisateur>) utilisateurRepository.findByArchiverIsFalse();
         return  utilisateur;
-
     }
 
 }

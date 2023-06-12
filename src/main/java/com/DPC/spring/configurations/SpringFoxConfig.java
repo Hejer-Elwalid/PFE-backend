@@ -13,13 +13,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.*;
 
-/**
- *
- *  Please visit this link for API documentation:
- *  Link of documentations : http://localhost:8080/api/v1/swagger-ui/index.html
- */
-
-
 @Configuration
 @Import(springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig {

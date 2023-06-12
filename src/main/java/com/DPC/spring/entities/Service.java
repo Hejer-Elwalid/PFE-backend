@@ -22,6 +22,4 @@ public class Service {
 	   private String profil;
 	   private Boolean archiver ;
 
-	//@ManyToOne
-	//private Autority authorities;
 }

@@ -17,12 +17,14 @@ public interface CongeRepository extends JpaRepository<Conge,Long> {
     @Query(nativeQuery = true,value = " select DATEDIFF(?,?)")
     Long nbrjour( String d1, String d2);
 	Conge findByMatricule(String matricule);
-@Query(nativeQuery=true,value="select c.datedebut - DATE( NOW() ) as datedebut ,c.datefin - DATE( NOW() ) as datefin , c.color , c.matricule, c.typeconge , u.matricule  as matriculeuser from conge c , utilisateur u where u.id=c.user_id and c.validerrh=1")
-List<Object>listcong();
-@Query(nativeQuery=true,value="select c.datedebut - DATE( NOW() ) as datedebut ,c.datefin - DATE( NOW() ) as datefin , c.color , c.matricule, c.typeconge , u.matricule as matriculeuser from conge c , utilisateur u where u.id=c.user_id and c.service=? and c.validerrh=1")
+//@Query(nativeQuery=true,value="select c.datedebut - DATE( NOW() ) as datedebut ,c.datefin - DATE( NOW() ) as datefin , c.color , c.matricule, c.typeconge , u.matricule  as matriculeuser from conge c , utilisateur u where u.id=c.user_id and c.validerrh=1")
+//List<Object>listcong(); //Verifier avec iheb ( Date now - Date debut )
+    @Query(nativeQuery=true,value="select DATEDIFF(c.datefin, c.datedebut) as datedebut,ABS(DATE( NOW() ) - c.datefin) as datefin , c.color , c.matricule, c.typeconge , u.matricule  as matriculeuser, c.datedebut as dated from conge c , utilisateur u where u.id=c.user_id and c.validerrh=1")
+    List<Object>listcong();
+@Query(nativeQuery=true,value="select DATEDIFF(c.datefin, c.datedebut) as datedebut,ABS(DATE( NOW() ) - c.datefin) as datefin , c.color , c.matricule, c.typeconge , u.matricule as matriculeuser, c.datedebut as dated  from conge c , utilisateur u where u.id=c.user_id and c.service=? and c.validerrh=1")
 List<Object>listcongchef(String service);
 
-@Query(nativeQuery=true,value="select c.datedebut - DATE( NOW() ) as datedebut ,c.datefin - DATE( NOW() ) as datefin , c.color , c.matricule, c.typeconge , u.matricule as matriculeuser from conge c , utilisateur u where u.id=c.user_id and  c.user_id=? and c.validerrh=1")
+@Query(nativeQuery=true,value="select DATEDIFF(c.datefin, c.datedebut) as datedebut,ABS(DATE( NOW() ) - c.datefin) as datefin , c.color , c.matricule, c.typeconge , u.matricule as matriculeuser, c.datedebut as dated  from conge c , utilisateur u where u.id=c.user_id and  c.user_id=? and c.validerrh=1")
 List<Object>listconguser(Long id);
 
 

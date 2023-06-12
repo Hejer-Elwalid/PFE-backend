@@ -28,17 +28,13 @@ public class JwtUserDetailsService implements UserDetailsService {
         if (email.trim().isEmpty()) {
             throw new UsernameNotFoundException("username is empty");
         }
-
         Utilisateur user = userService.findByEmail(email);
-
         if (user == null) {
             throw new UsernameNotFoundException("User with email = " + email + " not found");
         }
-
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getGrantedAuthorities(user));
-    }
-@Autowired
-AuthorityRepository authrepos ;
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getGrantedAuthorities(user)); }
+    @Autowired
+    AuthorityRepository authrepos ;
     private List<GrantedAuthority> getGrantedAuthorities(Utilisateur user) {
     	 List<GrantedAuthority> authorities = new ArrayList<>(); 
     	 Autority auth = this.authrepos.findByName(user.getProfil());

@@ -21,12 +21,6 @@ public class ServiceController {
 @Autowired
 ServiceRepository servicerepos ;
 
-	/*@PutMapping("/update")
-	public String update2(@RequestBody Service service ) {
-		Service service1 = this.servicerepos.findByNom(service.getNom());
-		Service s = this.servicerepos.findByNom(service.getNom());
-		service1= servicerepos.saveAndFlush(service);
-		return "true"; }*/
 
 	@PutMapping("/update")
 	public String update(@RequestBody Service service ) {
@@ -58,31 +52,31 @@ public String ajouter(@RequestBody Service service) {
 				return "true";
 	}
 }
-@GetMapping("/all")
-public List<Service> allservice(){
+   @GetMapping("/all")
+    public List<Service> allservice(){
 	return this.servicerepos.findByArchiverIsFalse();
 }
 
-@GetMapping("/servicebyid")
-public Service servicebyid(Long  id){
+   @GetMapping("/servicebyid")
+   public Service servicebyid(Long  id){
 	return this.servicerepos.findById(id).get();
 }
 
-
-
-
-@PostMapping("/archiver")
-public String archiver(Long  id){
- Service s =this.servicerepos.findById(id).get();
- s.setArchiver(true);	
- this.servicerepos.saveAndFlush(s);
- return "true";
-}
-
-
-	@GetMapping("/getservicebynom")
-	public Service rechercheservice (@RequestParam String nom) {
+   @GetMapping("/getservicebynom")
+   public Service rechercheservice (@RequestParam String nom) {
 		Service service = this.servicerepos.findByNom(nom);
 		return  service ;
 	}
+
+
+  @PostMapping("/archiver")
+  public String archiver(Long  id){
+  Service s =this.servicerepos.findById(id).get();
+  s.setArchiver(true);
+  this.servicerepos.saveAndFlush(s);
+  return "true";
+}
+
+
+
 }

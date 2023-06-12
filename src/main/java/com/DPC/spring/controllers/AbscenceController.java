@@ -18,7 +18,6 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("abs")
-
 public class AbscenceController {
     @Autowired
     UtilisateurRepository userrepos ;
@@ -28,32 +27,8 @@ public class AbscenceController {
     SanctionRepository sanctionrepos ;
 
     
-    
-	@PreAuthorize("hasAuthority('admin')")
-  /*  @PostMapping("/add")
-  public String add(@RequestBody Abscence abscence){
-
-    Utilisateur user = this.userrepos.findByMatricule(abscence.getUser().getMatricule());
-    Date dt=new Date();
-    int year=dt.getYear()+1900;
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    String strDate1 = formatter.format(year);
-    int count = this.absrepos.countabs(strDate1, user.getId());
-if(count>=15){
-    abscence.setUser(user);
-    this.absrepos.save(abscence);
-    Sanction s = new Sanction();
-    s.setUser(user);
-    s.setMatriculeuser(user.getMatricule());
-    this.sanctionrepos.save(s);
-    return "false";
-}
-else{
-    abscence.setUser(user);
-    this.absrepos.save(abscence);
-return "true";
-} }*/
-
+    // Ajouter Absence
+	//@PreAuthorize("hasAuthority('admin')")
     @PostMapping("/add")
     public String add(@RequestBody Abscence abscence){
 
@@ -87,7 +62,6 @@ return "true";
 		return this.absrepos.findByUser(user);
 	}
 
-
 	@GetMapping("/sanctionbyuser")
 	public List<Sanction> sanctionbyuser(String email){
 		Utilisateur user =this.userrepos.findByEmail(email);
@@ -99,15 +73,6 @@ return "true";
     return this.absrepos.findAll();
     }
 
-    //@PreAuthorize("hasAuthority('admin')")
-
-    /*@GetMapping("/modifier")
-    public String modifier(@RequestBody  Abscence abs){
-	Abscence absc = this.absrepos.findById(abs.getId()).get();
-	absc= absrepos.saveAndFlush(abs);
-	return "true";
-	}*/
-
     @PostMapping("/modifier")
     public String modifier(@RequestBody Abscence abs) {
         Abscence absc = this.absrepos.findById(abs.getId()).get();
@@ -117,13 +82,13 @@ return "true";
         absrepos.saveAndFlush(absc);
         return "true";
     }
-@PreAuthorize("hasAuthority('admin')")
+    //@PreAuthorize("hasAuthority('admin')")
     @GetMapping("/allabscencebyid")
     public Abscence listabscence(Long id){
     return this.absrepos.findById(id).get();	
     }
 
-	//@PreAuthorize("hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('admin')")
     @GetMapping("/allsansation")
     public List<Sanction> listsabsation(){
     return this.sanctionrepos.findAll();	

@@ -27,17 +27,11 @@ public class CongeController {
     	this.congerepos.saveAndFlush(c);
     		return "true"; }
 
-	//liste des conge refuser chef
-     /*@GetMapping("/congerefuserchef")
-        public List<Conge> congerefuserchef (String service ) {
-        return this.congerepos.findByServiceAndValider(service, "refuser"); }*/
 
    @GetMapping("/congerefuserchef")
    public List<Conge> congerefuserchef (@RequestParam("service") String service ) {
        return this.congerepos.findByServiceAndValider(service, "refuser");
    }
-
-
 
     @GetMapping("/congeaccepte")
     public List<Conge> congeaccepter () {
@@ -108,7 +102,7 @@ public class CongeController {
             return "true"; }
     }
     
-    
+    /*
     @PostMapping("/planification")
     public  String planification(@RequestBody Conge conge) {
         Utilisateur user = this.userrepos.findByMatricule(conge.getUser().getMatricule());
@@ -118,22 +112,21 @@ public class CongeController {
 
         List<Object> listconge = this.congerepos.listconge(user.getService().getId(),strDate1,strDate2);
         Long nbr =this.congerepos.nbrjour(strDate2,strDate1);
-if(listconge.size()>=2){
-    return "saisie impossible";
-}
-else{
-    if(user.getSoldeconge()>=nbr){
-        conge.setUser(user);
-        this.congerepos.save(conge);
-        user.setSoldeconge(user.getSoldeconge()-nbr);
-        this.userrepos.saveAndFlush(user);
-    }
-    else{
-        return "solde conge inferieur au nbr jour";
-    }
-}
-    return "true";
-    }
+           if(listconge.size()>=2){
+                return "saisie impossible";
+                }
+          else{
+          if(user.getSoldeconge()>=nbr){
+           conge.setUser(user);
+           this.congerepos.save(conge);
+           user.setSoldeconge(user.getSoldeconge()-nbr);
+           this.userrepos.saveAndFlush(user); }
+         else{
+               return "solde conge inferieur au nbr jour"; }
+        }return "true"; }
+        */
+
+
     @GetMapping("/conge")
     public List<Object>listall(){
     	return this.congerepos.listcong();
